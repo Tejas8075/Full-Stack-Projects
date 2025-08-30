@@ -1,69 +1,47 @@
-# React + TypeScript + Vite
+#<b>🛒 E-Commerce App</b>:
+A full-stack E-Commerce web application built with Spring Boot (Backend) and React (Frontend).
+It provides a smooth shopping experience with authentication, product management, cart system, order handling, and payment integration.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+#<b>✨ Features</b>:
+👤 <u>Customer</u>
+✅ Browse products with filter, sort & pagination
+✅ View detailed product info
+✅ Cart management – add, update, or remove items
+✅ Checkout with coupons, address management & payment (Razorpay 💳)
+✅ View & cancel order history
+✅ Manage account details
+✅ Write reviews & ratings
+✅ Maintain a wishlist
 
-Currently, two official plugins are available:
+🛍️ <u>Seller</u>
+✅ Dashboard with earnings graph & reports
+✅ Track sales, earnings, refunds & cancellations
+✅ Product management – add & manage inventory
+✅ Order management – view & fulfill orders
+✅ Monitor payments & transaction history
+✅ Manage seller profile
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+⚙️ <u>Admin</u>
+✅ Dashboard for platform overview
+✅ Manage sellers (approval & suspension)
+✅ Full coupon management (create, edit, delete)
+✅ Homepage customization via admin panel
+✅ Manage deals & promotional offers
 
-## Expanding the ESLint configuration
+#<b>🏗️ Tech Stack</b>
+🔹 <u>Frontend</u>
+⚛️ React 19
+🎨 Tailwind CSS
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+🔹 <u>Backend</u>
+☕ Java 17
+🌱 Spring Boot 3.x
+🛡️ Spring Security + JWT
+🗄️ MySQL (Database)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+💳 Razorpay API (Payments)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+#<b>Images</b>:
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
