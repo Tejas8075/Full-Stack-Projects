@@ -28,6 +28,7 @@ import com.authentify.backend.service.ProfileService;
 import com.authentify.backend.service.impl.AppUserDetailsServiceImpl;
 import com.authentify.backend.util.JWTUtil;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -160,6 +161,23 @@ public class AuthController {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
+		
+	}
+	
+	@PostMapping("/logout")
+	ResponseEntity<?> logout(HttpServletResponse response) {
+		
+		ResponseCookie cookie = ResponseCookie.from("jwt", "")
+											  .httpOnly(true)
+											  .secure(false)
+											  .path("/")
+											  .maxAge(0)
+											  .sameSite("Strict")
+											  .build();
+		
+		return ResponseEntity.ok()
+							 .header(HttpHeaders.SET_COOKIE, cookie.toString())
+							 .body("Logged out successfully !");
 		
 	}
 	
