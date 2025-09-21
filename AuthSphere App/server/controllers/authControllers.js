@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import userModel from '../models/userModel.js';
 import transporter from '../config/nodemailer.js';
 import { text } from 'express';
+import { EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE } from '../config/emailTemplates.js';
 
 // Registration
 export const register = async (req, res) => {
@@ -151,8 +152,12 @@ export const sendVerifyOtp = async (req, res) => {
 
     const user = await userModel.findById(userId);
 
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
     if (user.isAccountVerified) {
-      res.json({ success: false, message: 'Account already verified' });
+      return res.json({ success: false, message: "Account already verified" });
     }
 
     // Generate 6 digit OTP
@@ -167,7 +172,8 @@ export const sendVerifyOtp = async (req, res) => {
       from: process.env.SENDER_EMAIL,
       to: user.email,
       subject: 'Account Verification OTP',
-      text: `Your OTP is ${otp}. Verify your account using this OTP.`
+      // text: `Your OTP is ${otp}. Verify your account using this OTP.`,
+      html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
     };
 
     await transporter.sendMail(mailOption);
@@ -175,7 +181,7 @@ export const sendVerifyOtp = async (req, res) => {
     res.json({ success: true, message: "Verification OTP sent on Email." })
 
   } catch (error) {
-    res.json({ success: true, message: error.message });
+    res.json({ success: false, message: error.message });
   }
 
 }
@@ -257,7 +263,8 @@ export const sendResetOtp = async (req, res) => {
       from: process.env.SENDER_EMAIL,
       to: user.email,
       subject: 'Reset Password OTP',
-      text: `Your OTP is ${otp}. Reset your password using this OTP.`
+      // text: `Your OTP is ${otp}. Reset your password using this OTP.`
+      html: PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
     };
 
     await transporter.sendMail(mailOption);

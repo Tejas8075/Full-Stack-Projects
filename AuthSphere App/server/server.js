@@ -14,10 +14,13 @@ const app = express();
 const port = process.env.PORT || 4000
 connectDB();
 
+// variable for allowing frontend to access backend
+const allowedOrigins = ['http://localhost:5173'];
+
 app.use(express.json());
 app.use(cookieParser());
 // To send the cookie from the express app
-app.use(cors({credentials: true}));
+app.use(cors({origin: allowedOrigins, credentials: true}));
 
 // API Endpoints
 app.get("/", (req, res) => res.send("API Working"));
