@@ -12,7 +12,7 @@ export const signup = async (req, res) => {
 
   try {
 
-    if (!fullName || email || !password || !bio) {
+    if (!fullName || !email || !password || !bio) {
       return res.status(400).json({ success: false, message: "Missing details" });
     }
 
@@ -109,7 +109,8 @@ export const updateProfile = async (req, res) => {
     let updatedUser;
 
     if (!profilePic) {
-      updatedUser = await User.findById(userId, { bio, fullName }, { new: true })
+      updatedUser = await User.findByIdAndUpdate(userId, { bio, fullName }, { new: true });
+
     } else {
       const upload = await cloudinary.uploader.upload(profilePic);
 
