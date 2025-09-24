@@ -1,4 +1,4 @@
-# <b>🔐 Authentify App</b>
+# <b>🔐 AuthSphere App</b>
 
 A full-stack authentication system built with NodeJs +ExpressJs (Backend) and React (Frontend). It provides a secure and smooth user experience with JWT-based authentication, email verification, and password reset via OTP.
 
