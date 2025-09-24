@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { AuthContext } from "./AuthContext";
 import toast from "react-hot-toast";
+import { AuthContext } from "./AuthContext";
 
 export const ChatContext = createContext();
 
@@ -18,7 +18,7 @@ export const ChatProvider = ({ children }) => {
   // function to get all users for Sidebar
   const getUsers = async () => {
     try {
-      const { data } = await axios.get("/api/messages/users");
+      const { data } = await axios.get("/api/messages/user");
 
       if (data.success) {
         setUsers(data.users);
@@ -36,20 +36,27 @@ export const ChatProvider = ({ children }) => {
 
       if (data.success) {
         setMessages(data.messages);
+
+        // ✅ Reset unseen count for this user
+        setUnseenMessages((prev) => {
+          const updated = { ...prev };
+          delete updated[userId];
+          return updated;
+        });
       }
     } catch (error) {
       toast.error(error.message);
     }
-  }
+  };
 
   // function to send mesage to the selected user
   const sendMessage = async (messageData) => {
     try {
-      const {data} = await axios.get(`/api/messages/send/${selectedUser._id}`, messageData);
+      const { data } = await axios.post(`/api/messages/send/${selectedUser._id}`, messageData);
 
-      if(data.success){
+      if (data.success) {
         setMessages((prevMessages) => [...prevMessages, data.newMessage])
-      } else{
+      } else {
         toast.error(data.message);
       }
     } catch (error) {
@@ -61,10 +68,11 @@ export const ChatProvider = ({ children }) => {
   // We will get new Messages instantly
   // If new messages is get by the user then instantly show
   const subscribeToMessages = async () => {
-    if(!socket) return;
+    if (!socket) return;
 
     socket.on("newMessage", (newMessage) => {
-      if(selectedUser && newMessage.senderId === selectedUser._id){
+      
+      if (selectedUser && newMessage.senderId === selectedUser._id) {
         newMessage.seen = true;
         setMessages((prevMessages) => [...prevMessages, newMessage]);
 
@@ -72,7 +80,7 @@ export const ChatProvider = ({ children }) => {
         axios.put(`/api/messages/mark/${newMessage._id}`);
       } else {
         setUnseenMessages((prevUnseenMessages) => ({
-          ...prevUnseenMessages, [newMessage.senderId] : prevUnseenMessages[newMessage.senderId] ? prevUnseenMessages[newMessage.senderId] + 1 : 1
+          ...prevUnseenMessages, [newMessage.senderId]: prevUnseenMessages[newMessage.senderId] ? prevUnseenMessages[newMessage.senderId] + 1 : 1
         }))
       }
     })
@@ -80,7 +88,7 @@ export const ChatProvider = ({ children }) => {
 
   // function to unsubscribe from messages
   const unsubscribeFromMessages = () => {
-    if(socket) socket.off("newMessage")
+    if (socket) socket.off("newMessage")
   }
 
   // Whenever we open the profile page we should execute unsubscribeFromMessages and subscribeToMessages functions
@@ -97,10 +105,10 @@ export const ChatProvider = ({ children }) => {
     users,
     selectedUser,
     getUsers,
-    setMessages,
+    getMessages,
     sendMessage,
-    setSelectedUser, 
-    unseenMessages, 
+    setSelectedUser,
+    unseenMessages,
     setUnseenMessages
 
   }

@@ -2,7 +2,7 @@ import cloudinary from "../lib/cloud.js";
 import Message from "../models/Messages.js";
 import User from "../models/user.js";
 
-import {io, userSocketMap} from "../server.js";
+import { io, userSocketMap } from "../server.js";
 
 
 // Get all users except logged in users
@@ -60,7 +60,7 @@ export const getMessages = async (req, res) => {
 
     await Message.updateMany({ senderId: selectedUserId, receiverId: myId }, { seen: true })
 
-    res.status(200).json({ messages });
+    res.status(200).json({ success: true, messages });
 
   } catch (error) {
     responseStatusMsg(500, error.message, false, "Internal server error", "Error in Get User ")
@@ -87,18 +87,15 @@ export const markMessageAsSeen = async (req, res) => {
 }
 
 // Send message to the selected user
-export const sendMessage = async () => {
-
+export const sendMessage = async (req, res) => {
   try {
-
-    const {text, image} = req.body;
-    const receiverId = req.params.Id;
+    const { text, image } = req.body;
+    const receiverId = req.params.id;
     const senderId = req.user._id;
 
     let imageUrl;
-    if(image){
+    if (image) {
       const uploadResponse = await cloudinary.uploader.upload(image);
-
       imageUrl = uploadResponse.secure_url;
     }
 
@@ -106,23 +103,30 @@ export const sendMessage = async () => {
       senderId,
       receiverId,
       text,
-      image: imageUrl
-    })
+      image: imageUrl,
+    });
 
-    // Emit the new Message to the receiver's socket
+    // Emit to receiver
     const receiverSocketId = userSocketMap[receiverId];
-
-    if(receiverId){
+    if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
+
+    // Emit to sender (so multiple tabs of sender also stay synced)
+    const senderSocketId = userSocketMap[senderId];
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("newMessage", newMessage);
     }
 
     res.status(200).json({
       success: true,
-      newMessage
+      newMessage,
     });
-
   } catch (error) {
-    responseStatusMsg(500, error.message, false, "Internal server error", "Error in Sent Msg ")
+    res.status(500).json({
+      success: false,
+      message: "Error in Send Msg",
+      error: error.message,
+    });
   }
-
-}
+};

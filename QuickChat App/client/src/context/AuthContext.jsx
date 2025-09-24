@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import axios from 'axios';
 import toast from "react-hot-toast";
 import { io } from "socket.io-client"
+import { useNavigate } from "react-router-dom";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -20,6 +21,8 @@ export const AuthContext = createContext();
 // }
 
 export const AuthProvider = ({ children }) => {
+
+  const navigate = useNavigate();
 
   // If the token is available in the localStorage then it will be stored in 'token' state
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -47,7 +50,7 @@ export const AuthProvider = ({ children }) => {
 
   // User can login and register OR
   // Login function to handle user authentication and socket connection
-  const login = async (state, credentials) => {
+  const login = async (state, credentials, navigate) => {
     try {
       const { data } = await axios.post(backendUrl + `/api/auth/${state}`, credentials);
 
@@ -61,6 +64,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", data.token);
 
         toast.success(data.message);
+
+        navigate("/");
       } else {
         toast.error(data.message);
       }
