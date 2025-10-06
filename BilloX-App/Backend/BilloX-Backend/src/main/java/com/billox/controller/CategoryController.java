@@ -25,14 +25,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/categories")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class CategoryController {
 
 	private final CategoryService cService;
 
-	@PostMapping
+	@PostMapping("/admin/categories")
 	@ResponseStatus(HttpStatus.CREATED)
 	CategoryResponse addCategory(@RequestPart("category") String categoryString, 
 								 @RequestPart("file") MultipartFile file
@@ -59,7 +57,7 @@ public class CategoryController {
 		
 	}
 	
-	@DeleteMapping("/{categoryId}")
+	@DeleteMapping("/admin/categories/{categoryId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void remove(@PathVariable String categoryId) {
 		
