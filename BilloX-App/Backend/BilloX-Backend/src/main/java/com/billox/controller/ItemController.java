@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.billox.io.CategoryRequest;
-import com.billox.io.CategoryResponse;
-import com.billox.service.CategoryService;
+import com.billox.io.ItemRequest;
+import com.billox.io.ItemResponse;
+import com.billox.service.ItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,46 +24,43 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class CategoryController {
+public class ItemController {
 
-	private final CategoryService cService;
-
-	@PostMapping("/admin/categories")
+	private final ItemService iService;
+	
+	@PostMapping("/admin/items")
 	@ResponseStatus(HttpStatus.CREATED)
-	CategoryResponse addCategory(@RequestPart("category") String categoryString, 
-								 @RequestPart("file") MultipartFile file
-								) throws IOException {
-
+	ItemResponse addItem(@RequestPart("item") String itemString, 
+						 @RequestPart("file") MultipartFile file) throws IOException {
+		
 		ObjectMapper objectMapper = new ObjectMapper();
-		CategoryRequest request = null;
+		ItemRequest itemRequest = null;
 		
 		try {
-			request = objectMapper.readValue(categoryString, CategoryRequest.class);
+			itemRequest = objectMapper.readValue(itemString, ItemRequest.class);
 			
-			return cService.add(request, file);
+			return iService.add(itemRequest, file);
 		} catch (JsonProcessingException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exception occured while parsing json: " + e.getMessage());
 		}
-
-	}
-	
-	@GetMapping
-	List<CategoryResponse> fetchCategories(){
-		
-		return cService.read();
 		
 	}
 	
-	@DeleteMapping("/admin/categories/{categoryId}")
+	@GetMapping("/items")
+	List<ItemResponse> readItems(){
+		
+		return iService.fetchItems();
+	}
+	
+	@DeleteMapping("/admin/items/{itemId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	void remove(@PathVariable String categoryId) {
+	void removeItem(@PathVariable String itemId) {
 		
 		try {
-			cService.delete(categoryId);
+			iService.deleteItems(itemId);
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
 		}
-		
 	}
-
+	
 }

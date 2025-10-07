@@ -1,5 +1,6 @@
 package com.billox.io;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
@@ -8,22 +9,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class CategoryResponse {
+@NoArgsConstructor
+@AllArgsConstructor
+public class ItemResponse {
 
-	private String categoryId;
+	private String itemId;
 
 	private String name;
 
+	private BigDecimal price;
+
+	private String categoryId;
+
 	private String description;
 
-	private String bgColor;
+	private String categoryName;
 
 	private String imgUrl;
-	
-	private Integer items;
 
 	private Timestamp createdAt;
 

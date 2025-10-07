@@ -18,6 +18,7 @@ import com.billox.entity.CategoryEntity;
 import com.billox.io.CategoryRequest;
 import com.billox.io.CategoryResponse;
 import com.billox.repository.CategoryRepository;
+import com.billox.repository.ItemRepository;
 import com.billox.service.CategoryService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 public class CategoryServiceImpl implements CategoryService {
 
 	private final CategoryRepository cRepo;
+	
+	private final ItemRepository iRepo;
 
 	private final StaticResourceConfig sRConfig;
 
@@ -91,10 +94,12 @@ public class CategoryServiceImpl implements CategoryService {
 
 	private CategoryResponse convertToResponse(CategoryEntity newCategory) {
 
+		Integer itemsCount = iRepo.countByCategoryId(newCategory.getId());
+		
 		return CategoryResponse.builder().categoryId(newCategory.getCategoryId()).name(newCategory.getName())
 				.description(newCategory.getDescription()).bgColor(newCategory.getBgColor())
 				.imgUrl(newCategory.getImgUrl()).createdAt(newCategory.getCreatedAt())
-				.updatedAt(newCategory.getUpdatedAt()).build();
+				.updatedAt(newCategory.getUpdatedAt()).items(itemsCount).build();
 
 	}
 
