@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.billox.io.AuthRequest;
 import com.billox.io.AuthResponse;
 import com.billox.service.AppUserDetailsService;
+import com.billox.service.UserService;
 import com.billox.util.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,8 @@ public class AuthController {
 	
 	private final JwtUtil jwtUtil;
 	
+	private final UserService uService;
+	
 	@PostMapping("/login")
 	AuthResponse login(@RequestBody AuthRequest request) throws Exception {
 		
@@ -44,9 +47,9 @@ public class AuthController {
 		final String jwtToken = jwtUtil.generateToken(userDetails);
 		
 		// fetch the role from repository
+		String role = uService.getUserRole(request.getEmail());
 		
-		
-		return new AuthResponse(request.getEmail(), "USER", jwtToken);
+		return new AuthResponse(request.getEmail(), jwtToken, role);
 		
 	}
 	

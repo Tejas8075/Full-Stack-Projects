@@ -19,7 +19,7 @@ public class UserResponse {
 
 	private String email;
 
-	private String password;
+//	private String password;
 	
 	private Timestamp createdAt;
 

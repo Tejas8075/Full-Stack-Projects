@@ -33,14 +33,15 @@ public class JwtUtil {
 
 	private String createToken(Map<String, Object> claims, String subject) {
 		
-	    SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
+//	    SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
 		
 		return Jwts.builder()
 				   .claims(claims)
 				   .subject(subject)
 				   .issuedAt(new Date(System.currentTimeMillis()))
 				   .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10hrs
-				   .signWith(key, SignatureAlgorithm.HS256)
+//				   .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+				   .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
 				   .compact();
 	}
 	
@@ -61,10 +62,10 @@ public class JwtUtil {
 	}
 	
 	private Claims extractAllClaims(String token) {
-	    SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
+//	    SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
 	    
 	    return Jwts.parser()
-	    		   .setSigningKey(key)
+	    		   .setSigningKey(SECRET_KEY)
 	    		   .build()
 	    		   .parseClaimsJws(token)
 	    		   .getBody();
@@ -74,7 +75,7 @@ public class JwtUtil {
 		return extractExpiration(token).before(new Date());
 	}
 	
-	private Boolean validateToken(String token, UserDetails userDetails) {
+	public Boolean validateToken(String token, UserDetails userDetails) {
 		
 		final String username = extractUsername(token);
 		
