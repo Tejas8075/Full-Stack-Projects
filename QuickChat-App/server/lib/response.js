@@ -1,4 +1,4 @@
-export const responseStatusMsg = (statusCode, error, successInJson, messageInJson, customConsoleMsg) => {
+export const responseStatusMsg = (res, statusCode, error, successInJson, messageInJson, customConsoleMsg) => {
 
   console.log(customConsoleMsg, error)
 

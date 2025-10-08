@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
         connectSocket(data.user);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error("Internal Server Error");
     }
   }
 
@@ -70,6 +70,7 @@ export const AuthProvider = ({ children }) => {
         toast.error(data.message);
       }
     } catch (error) {
+      // const errorMsg = error.response?.data?.message || "Something went wrong!";
       toast.error(error.message);
     }
   }
@@ -99,7 +100,8 @@ export const AuthProvider = ({ children }) => {
       }
 
     } catch (error) {
-      toast.error(error.message);
+        const errorMsg = error.response?.data?.message || "Something went wrong!";
+        toast.error(errorMsg);
     }
   }
 
