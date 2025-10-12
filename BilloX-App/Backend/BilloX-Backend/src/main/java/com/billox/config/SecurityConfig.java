@@ -40,7 +40,8 @@ public class SecurityConfig {
 		http.cors(Customizer.withDefaults())
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth.requestMatchers("/login", "/encode", "/uploads/**").permitAll()
-			.requestMatchers("/categories", "/items").hasAnyRole("USER", "ADMIN")
+//			.requestMatchers("/categories", "/items").hasAnyRole("USER", "ADMIN")
+					.requestMatchers("/categories", "/items").permitAll()
 			// anything that starts with /admin will only be accessed by ADMIN
 			.requestMatchers("/admin/**").hasRole("ADMIN")
 			.anyRequest()
