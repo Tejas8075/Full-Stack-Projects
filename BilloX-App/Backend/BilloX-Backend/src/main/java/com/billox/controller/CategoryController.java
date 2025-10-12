@@ -47,7 +47,7 @@ public class CategoryController {
 
 	}
 	
-	@GetMapping
+	@GetMapping("/categories")
 	List<CategoryResponse> fetchCategories(){
 		
 		return cService.read();
