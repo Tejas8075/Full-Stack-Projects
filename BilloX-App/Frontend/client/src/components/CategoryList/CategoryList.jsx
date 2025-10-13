@@ -55,10 +55,6 @@ const CategoryList = () => {
         </div>
       </div>
 
-      {/* <div className="row pe-2">
-
-      </div> */}
-
       <div className="row g-3 pe-2">
         {filteredCategories.map((category, index) => (
           <div key={index} className='col-12'>

@@ -98,17 +98,24 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	private ItemResponse convertToResponse(ItemEntity newItem) {
-
-		return ItemResponse.builder().imgUrl(newItem.getItemId()).name(newItem.getName())
-				.description(newItem.getDescription()).price(newItem.getPrice())
-				.categoryName(newItem.getCategory().getName()).categoryId(newItem.getCategory().getCategoryId())
-				.createdAt(newItem.getCreatedAt()).updatedAt(newItem.getUpdatedAt()).build();
+	    return ItemResponse.builder()
+	        .itemId(newItem.getItemId())
+	        .imgUrl(newItem.getImgUrl())
+	        .name(newItem.getName())
+	        .description(newItem.getDescription())
+	        .price(newItem.getPrice())
+	        .categoryName(newItem.getCategory().getName())
+	        .categoryId(newItem.getCategory().getCategoryId())
+	        .createdAt(newItem.getCreatedAt())
+	        .updatedAt(newItem.getUpdatedAt())
+	        .build();
 	}
+
 
 	private ItemEntity convertToEntity(ItemRequest request) {
 
 		return ItemEntity.builder().itemId(UUID.randomUUID().toString()).name(request.getName())
-				.description(request.getName()).price(request.getPrice()).build();
+				.description(request.getDescription()).price(request.getPrice()).build();
 
 	}
 
