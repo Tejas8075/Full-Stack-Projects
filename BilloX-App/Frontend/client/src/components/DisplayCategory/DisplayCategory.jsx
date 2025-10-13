@@ -2,7 +2,7 @@ import React from 'react'
 import "./displayCategory.css"
 import Category from '../Category/Category'
 
-const DisplayCategory = ({categories}) => {
+const DisplayCategory = ({categories, selectedCategory, setSelectedCategory}) => {
   return (
     <div className="row gap-3"
     style={{width: "100%", margin: "0"}}
@@ -17,6 +17,8 @@ const DisplayCategory = ({categories}) => {
             imgUrl={category.imgUrl}
             numberOfItems={category.items}
             bgColor={category.bgColor}
+            isSelected={selectedCategory === category.categoryId}
+            onClick={() => setSelectedCategory(category.categoryId)}
           />
         </div>
       ))}

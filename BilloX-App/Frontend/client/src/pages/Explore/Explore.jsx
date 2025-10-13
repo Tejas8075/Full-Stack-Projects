@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import './explore.css'
 import { AppContext } from '../../context/AppContext'
 import DisplayCategory from '../../components/DisplayCategory/DisplayCategory';
@@ -9,8 +9,14 @@ import CartSummary from '../../components/CartSummary/CartSummary';
 
 const Explore = () => {
 
-  const {categories} = useContext(AppContext);
+  const { categories } = useContext(AppContext);
   console.log(categories);
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const [customerName, setCustomerName] = useState("");
+
+  const [mobileNumber, setMobileNumber] = useState("");
 
   return (
     <div className='explore-container text-light'>
@@ -18,7 +24,11 @@ const Explore = () => {
         <div className="first-row"
           style={{ overflowY: "auto" }}
         >
-          <DisplayCategory categories={categories} />
+          <DisplayCategory
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
 
         </div>
 
@@ -27,33 +37,34 @@ const Explore = () => {
         <div className="second-row"
           style={{ overflowY: "auto" }}
         >
-          <DisplayItems />
+          <DisplayItems selectedCategory={selectedCategory} />
 
         </div>
       </div>
 
-      <div className="right-column d-flex flex-cloumn">
-        <div className="customer-form-container"
-          style={{ height: "15%" }}
-        >
-          <CustomerForm />
-
+      <div className="right-column d-flex flex-column">
+        <div className="customer-form-container flex-shrink-0">
+          <CustomerForm
+            customerName={customerName}
+            mobileNumber={mobileNumber}
+            setCustomerName={setCustomerName}
+            setMobileNumber={setMobileNumber}
+          />
         </div>
 
         <hr className="my-3 text-light" />
 
-        <div className="cart-items-container"
-          style={{ height: "55%", overflowY: "auto" }}
-        >
+        <div className="cart-items-container flex-grow-1 overflow-auto">
           <CartItems />
-
         </div>
 
-        <div className="cart-summary-container"
-          style={{ height: "30%" }}
-        >
-          <CartSummary />
-
+        <div className="cart-summary-container flex-shrink-0 mt-3">
+          <CartSummary
+            customerName={customerName}
+            mobileNumber={mobileNumber}
+            setCustomerName={setCustomerName}
+            setMobileNumber={setMobileNumber}
+          />
         </div>
       </div>
     </div>
