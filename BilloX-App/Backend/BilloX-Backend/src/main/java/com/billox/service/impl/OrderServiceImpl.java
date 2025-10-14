@@ -47,6 +47,17 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public void updateRazorpayOrderId(String orderId, String razorpayOrderId) {
+		OrderEntity order = oRepo.findByOrderId(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+
+		PaymentDetails details = order.getPaymentDetails();
+		details.setRazorpayOrderId(razorpayOrderId);
+		order.setPaymentDetails(details);
+
+		oRepo.save(order);
+	}
+
+	@Override
 	public void deleteOrder(String orderId) {
 
 		OrderEntity existingOrder = oRepo.findByOrderId(orderId)
@@ -73,16 +84,16 @@ public class OrderServiceImpl implements OrderService {
 				request.getRazorpaySignature())) {
 			throw new RuntimeException("Payment verification failed");
 		}
-		
+
 		PaymentDetails paymentDetails = existingOrder.getPaymentDetails();
-		
+
 		paymentDetails.setRazorpayOrderId(request.getRazorpayOrderId());
 		paymentDetails.setRazorpayPaymentId(request.getRazorpayPaymentId());
 		paymentDetails.setRazorpaySignature(request.getRazorpaySignature());
 		paymentDetails.setStatus(PaymentDetails.PaymentStatus.COMPLETED);
-		
+
 		existingOrder = oRepo.save(existingOrder);
-		
+
 		return convertToResponse(existingOrder);
 
 	}

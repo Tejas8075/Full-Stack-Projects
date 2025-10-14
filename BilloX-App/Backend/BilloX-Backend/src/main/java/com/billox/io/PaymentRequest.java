@@ -13,4 +13,6 @@ public class PaymentRequest {
 	
 	private String currency;
 	
+	private String orderId;
+	
 }

@@ -23,22 +23,33 @@ import lombok.RequiredArgsConstructor;
 public class PaymentController {
 
 	private final RazorpayService rService;
-	
+
 	private final OrderService oService;
-	
+
+//	@PostMapping("/create-order")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	RazorpayOrderResponse createRazorpayOrder(@RequestBody PaymentRequest request) throws RazorpayException{
+//		
+//		return rService.createOrder(request.getAmount(), request.getCurrency());
+//		
+//	}
+
 	@PostMapping("/create-order")
 	@ResponseStatus(HttpStatus.CREATED)
-	RazorpayOrderResponse createRazorpayOrder(@RequestBody PaymentRequest request) throws RazorpayException{
-		
-		return rService.createOrder(request.getAmount(), request.getCurrency());
-		
+	RazorpayOrderResponse createRazorpayOrder(@RequestBody PaymentRequest request) throws RazorpayException {
+		RazorpayOrderResponse razorpayOrder = rService.createOrder(request.getAmount(), request.getCurrency());
+
+		// Save Razorpay Order ID into Order record
+		oService.updateRazorpayOrderId(request.getOrderId(), razorpayOrder.getId());
+
+		return razorpayOrder;
 	}
-	
+
 	@PostMapping("/verify")
 	OrderResponse verifyPayment(@RequestBody PaymentVerificationRequest request) {
-		
+
 		return oService.verifyPayment(request);
-		
+
 	}
-	
+
 }

@@ -16,4 +16,6 @@ public interface OrderService {
 	
 	OrderResponse verifyPayment(PaymentVerificationRequest request);
 	
+    void updateRazorpayOrderId(String orderId, String razorpayOrderId);
+	
 }
