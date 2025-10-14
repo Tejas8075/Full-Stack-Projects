@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const latestOrders = async () => {
-  return await axios.get(`http://localhost:8080/api/v1.0/orders/latet`, {
+  return await axios.get(`http://localhost:8080/api/v1.0/orders/latest`, {
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
 }

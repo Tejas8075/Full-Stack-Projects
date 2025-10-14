@@ -25,7 +25,7 @@ const OrderHistory = () => {
     fetchOrders();
   }, [])
 
-  const formatItems = () => {
+  const formatItems = (items) => {
     return items.map((item) => `${item.name} x ${item.quantity}`).join(',');
   }
 
@@ -52,7 +52,45 @@ const OrderHistory = () => {
   }
 
   return (
-    <div>OrderHistory</div>
+    <div className="order-history-container">
+      <h2 className="mb-2 text-light">Recent Orders</h2>
+
+      <div className="table-responsive">
+        <table className='table table-striped table-hover'>
+          <thead className='table-dark'>
+            <tr>
+              <th>Order Id</th>
+              <th>Customer</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Payment</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {
+              orders.map(order => (
+                <tr key={order.orderId}>
+                  <td>{order.orderId}</td>
+                  <td>{order.customerName} <br/>
+                    <small className='text-muted'>{order.phoneNumber}</small>
+                  </td>
+                  <td>{formatItems(order.items)}</td>
+                  <td>₹{order.grandTotal}</td>
+                  <td>{order.paymentMethod}</td>
+                  <td>
+                    <span className={`badge ${order.paymentDetails?.status === "COMPLETED" ? "bg-success" : "bg-warning text-dark"}`}>{order.paymentDetails?.status || "PENDING"}</span>
+                  </td>
+                  <td>{formatDate(order.createdAt)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
   )
 }
 
