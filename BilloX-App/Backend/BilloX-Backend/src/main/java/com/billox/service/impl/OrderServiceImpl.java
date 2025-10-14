@@ -11,6 +11,7 @@ import com.billox.io.OrderRequest;
 import com.billox.io.OrderResponse;
 import com.billox.io.PaymentDetails;
 import com.billox.io.PaymentMethod;
+import com.billox.io.PaymentVerificationRequest;
 import com.billox.repository.OrderRepository;
 import com.billox.service.OrderService;
 
@@ -47,22 +48,49 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void deleteOrder(String orderId) {
-		
+
 		OrderEntity existingOrder = oRepo.findByOrderId(orderId)
-			 .orElseThrow(() -> new RuntimeException("Order No Found"));
+				.orElseThrow(() -> new RuntimeException("Order No Found"));
 
 		oRepo.delete(existingOrder);
-		
+
 	}
 
 	@Override
 	public List<OrderResponse> getLatestOrders() {
+
+		return oRepo.findAllByOrderByCreatedAtDesc().stream().map(this::convertToResponse).collect(Collectors.toList());
+
+	}
+
+	@Override
+	public OrderResponse verifyPayment(PaymentVerificationRequest request) {
+
+		OrderEntity existingOrder = oRepo.findByOrderId(request.getOrderId())
+				.orElseThrow(() -> new RuntimeException("Order not Found"));
+
+		if (!verifyRazorpaySignature(request.getRazorpayOrderId(), request.getRazorpayPaymentId(),
+				request.getRazorpaySignature())) {
+			throw new RuntimeException("Payment verification failed");
+		}
 		
-		return oRepo.findAllByOrderByCreatedAtDesc()
-			 .stream()
-			 .map(this :: convertToResponse)
-			 .collect(Collectors.toList());
+		PaymentDetails paymentDetails = existingOrder.getPaymentDetails();
 		
+		paymentDetails.setRazorpayOrderId(request.getRazorpayOrderId());
+		paymentDetails.setRazorpayPaymentId(request.getRazorpayPaymentId());
+		paymentDetails.setRazorpaySignature(request.getRazorpaySignature());
+		paymentDetails.setStatus(PaymentDetails.PaymentStatus.COMPLETED);
+		
+		existingOrder = oRepo.save(existingOrder);
+		
+		return convertToResponse(existingOrder);
+
+	}
+
+	private boolean verifyRazorpaySignature(String razorpayOrderId, String razorpayPaymentId,
+			String razorpaySignature) {
+		// Handle in very detail in production not only return true
+		return true;
 	}
 
 	private OrderResponse convertToResponse(OrderEntity newOrder) {

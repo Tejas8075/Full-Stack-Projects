@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.billox.io.OrderRequest;
 import com.billox.io.OrderResponse;
+import com.billox.io.PaymentVerificationRequest;
 
 public interface OrderService {
 
@@ -12,5 +13,7 @@ public interface OrderService {
 	void deleteOrder(String orderId);
 	
 	List<OrderResponse> getLatestOrders();
+	
+	OrderResponse verifyPayment(PaymentVerificationRequest request);
 	
 }
