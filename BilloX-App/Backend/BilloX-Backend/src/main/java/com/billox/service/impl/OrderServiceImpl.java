@@ -1,8 +1,10 @@
 package com.billox.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.billox.entity.OrderEntity;
@@ -96,6 +98,24 @@ public class OrderServiceImpl implements OrderService {
 
 		return convertToResponse(existingOrder);
 
+	}
+
+	@Override
+	public Double sumSalesByDate(LocalDate date) {
+		return oRepo.sumSalesByDate(date);
+	}
+
+	@Override
+	public Long countByOrderDate(LocalDate date) {
+		return oRepo.countByOrderDate(date);
+	}
+
+	@Override
+	public List<OrderResponse> findRecentOrders() {
+		return oRepo.findRecentOrders(PageRequest.of(0, 5))
+			 .stream()
+			 .map(this :: convertToResponse)
+			 .toList();
 	}
 
 	private boolean verifyRazorpaySignature(String razorpayOrderId, String razorpayPaymentId,

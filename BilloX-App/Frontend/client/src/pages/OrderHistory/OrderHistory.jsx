@@ -43,11 +43,11 @@ const OrderHistory = () => {
 
   }
 
-  if(loading){
+  if (loading) {
     return <div className='text-center py-4'>Loading orders...</div>
   }
 
-  if(orders.length === 0){
+  if (orders.length === 0) {
     return <div className="text center py-4">No orders found</div>
   }
 
@@ -70,23 +70,24 @@ const OrderHistory = () => {
           </thead>
 
           <tbody>
-            {
-              orders.map(order => (
-                <tr key={order.orderId}>
-                  <td>{order.orderId}</td>
-                  <td>{order.customerName} <br/>
-                    <small className='text-muted'>{order.phoneNumber}</small>
-                  </td>
-                  <td>{formatItems(order.items)}</td>
-                  <td>₹{order.grandTotal}</td>
-                  <td>{order.paymentMethod}</td>
-                  <td>
-                    <span className={`badge ${order.paymentDetails?.status === "COMPLETED" ? "bg-success" : "bg-warning text-dark"}`}>{order.paymentDetails?.status || "PENDING"}</span>
-                  </td>
-                  <td>{formatDate(order.createdAt)}</td>
-                </tr>
-              ))
-            }
+            {orders.map(order => (
+              <tr key={order.orderId}>
+                <td data-label="Order Id">{order.orderId}</td>
+                <td data-label="Customer">
+                  {order.customerName} <br />
+                  <small className='text-muted'>{order.phoneNumber}</small>
+                </td>
+                <td data-label="Items">{formatItems(order.items)}</td>
+                <td data-label="Total">₹{order.grandTotal}</td>
+                <td data-label="Payment">{order.paymentMethod}</td>
+                <td data-label="Status">
+                  <span className={`badge ${order.paymentDetails?.status === "COMPLETED" ? "bg-success" : "bg-warning text-dark"}`}>
+                    {order.paymentDetails?.status || "PENDING"}
+                  </span>
+                </td>
+                <td data-label="Date">{formatDate(order.createdAt)}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

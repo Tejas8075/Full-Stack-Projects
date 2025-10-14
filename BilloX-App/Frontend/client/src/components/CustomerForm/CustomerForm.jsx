@@ -13,6 +13,7 @@ const CustomerForm = ({customerName, mobileNumber, setCustomerName, setMobileNum
             id='customerName'
             onChange={(e) => setCustomerName(e.target.value)}
             value={customerName}
+            required
           />
         </div>
       </div>
@@ -26,6 +27,7 @@ const CustomerForm = ({customerName, mobileNumber, setCustomerName, setMobileNum
             id='mobileNumber'
             onChange={(e) => setMobileNumber(e.target.value)}
             value={mobileNumber}
+            required
           />
         </div>
       </div>

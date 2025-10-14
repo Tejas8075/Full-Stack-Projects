@@ -81,7 +81,7 @@ const Login = () => {
 
               <div className="mb-4">
                 <label htmlFor="password" className='form-label text-muted'>
-                  Email address
+                  Password
                 </label>
 
                 <input type="password" name='password' id='password' placeholder='********' className='form-control'

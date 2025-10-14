@@ -41,7 +41,7 @@ export const AppContextProvider = ({children}) => {
     // API call to fetch the categories
     async function loadData(){
 
-      if(localStorage.getItem("tokne") && localStorage.getItem("role")){
+      if(localStorage.getItem("token") && localStorage.getItem("role")){
         setAuthData(
           localStorage.getItem("token"),
           localStorage.getItem("role")

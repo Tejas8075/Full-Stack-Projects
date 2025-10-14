@@ -1,39 +1,129 @@
 .order-history-container {
   padding: 20px;
-  height: calc(100vh, 4.5rem);
+  height: calc(100vh - 4.5rem);
+  /* fills viewport minus header */
   box-sizing: border-box;
-  background-color: #2c3335;
+  background-color: #1e1e1e;
+  color: #f8f9fa;
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .order-history-container h2 {
-  color: #343a40;
+  color: #f8f9fa;
   font-weight: 600;
+  margin-bottom: 15px;
 }
 
+/* Make table vertically scrollable */
+.table-responsive {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* Table styles */
 .table {
-  margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+  vertical-align: middle;
+  border-bottom: 1px solid #343a40;
 }
 
 .table th {
+  background-color: #343a40;
+  color: #f8f9fa;
   font-weight: 600;
 }
 
-.table td {
-  vertical-align: middle;
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #2c2f33;
 }
 
+.table-striped tbody tr:nth-of-type(even) {
+  background-color: #25282a;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #3a3f44;
+  transition: background-color 0.2s ease;
+}
+
+/* Badges */
 .badge {
-  font-size: 0.85em;
-  padding: 5px 8px;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
+.bg-success {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+}
+
+.bg-warning {
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.text-dark {
+  color: #212529 !important;
+}
+
+.text-muted {
+  color: #adb5bd !important;
+  font-size: 0.85rem;
+}
+
+/* Responsive: convert table into stacked cards on small screens */
 @media (max-width: 768px) {
   .table-responsive {
-    overflow-x: auto;
+    overflow: visible;
   }
 
+  .table,
+  .table thead,
+  .table tbody,
+  .table th,
   .table td,
-  .table th {
-    white-space: nowrap;
+  .table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .table thead tr {
+    display: none;
+  }
+
+  .table tbody tr {
+    margin-bottom: 15px;
+    background-color: #2c2f33;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .table tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border: none;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #adb5bd;
   }
 }

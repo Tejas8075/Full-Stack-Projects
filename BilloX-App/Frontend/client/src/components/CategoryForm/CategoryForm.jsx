@@ -79,9 +79,14 @@ const CategoryForm = () => {
                   width={55} 
                   />
 
-                  <input type="file" name='image' id='image' className='form-control' 
+                  <input 
+                  type="file" 
+                  name='image' 
+                  id='image' 
+                  className='form-control' 
                   hidden 
                   onChange={(e) => setImage(e.target.files[0])}
+                  required
                   />
                 </label>
               </div>
@@ -95,6 +100,7 @@ const CategoryForm = () => {
                   placeholder='Category Name'
                   onChange={onChangeHandler}
                   value={data.name}
+                  required
                 />
               </div>
 

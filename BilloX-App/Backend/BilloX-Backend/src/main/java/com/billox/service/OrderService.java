@@ -1,5 +1,6 @@
 package com.billox.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.billox.io.OrderRequest;
@@ -18,4 +19,10 @@ public interface OrderService {
 	
     void updateRazorpayOrderId(String orderId, String razorpayOrderId);
 	
+    Double sumSalesByDate(LocalDate date);
+    
+    Long countByOrderDate(LocalDate date);
+    
+    List<OrderResponse> findRecentOrders();
+    
 }

@@ -107,6 +107,7 @@ const ItemForm = () => {
                       className='form-control'
                       hidden
                       onChange={(e) => setImage(e.target.files[0])}
+                      required
                     />
                   </label>
                 </div>
@@ -120,6 +121,7 @@ const ItemForm = () => {
                     placeholder='Item Name'
                     onChange={onChangeHandler}
                     value={data.name}
+                    required
                   />
                 </div>
 
@@ -133,6 +135,7 @@ const ItemForm = () => {
                     className="form-control"
                     onChange={onChangeHandler}
                     value={data.categoryId}
+                    required
                   >
                     <option value="">--SELECT CATEGORY--</option>
                     {categories.map((category, index) => (
@@ -155,6 +158,7 @@ const ItemForm = () => {
                     placeholder='&#8377;200.00'
                     onChange={onChangeHandler}
                     value={data.price}
+                    required
                   />
                 </div>
 
