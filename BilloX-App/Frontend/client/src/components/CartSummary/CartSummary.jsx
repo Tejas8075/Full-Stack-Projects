@@ -15,7 +15,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
   const tax = totalAmount * 0.01;
   const grandTotal = totalAmount + tax;
 
-  const [isProcessing, setIsProcesing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [orderDetails, setOrderDetails] = useState(null);
 
@@ -27,9 +27,22 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
     clearCart();
   }
 
+  // const placeOrder = () => {
+  //   setShowPopup(true);
+  //   clearAll();
+  // }
+
   const placeOrder = () => {
+    if (!orderDetails) return;
+
     setShowPopup(true);
-    clearAll();
+  }
+
+  // Call this after closing the receipt
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setOrderDetails(null); // Reset for next order
+    clearAll();            // Clear customer info and cart
   }
 
   const handlePrintReceipt = () => {
@@ -79,7 +92,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
       paymentMethod: paymentMode.toUpperCase()
     }
 
-    setIsProcesing(true);
+    setIsProcessing(true);
 
     try {
 
@@ -89,6 +102,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
 
       if (response.status === 201 && paymentMode === "cash") {
         toast.success("Payment successful with Cash");
+
         setOrderDetails(savedData);
       } else if (response.status === 201 && paymentMode === "upi") {
         const razorpayLoaded = await loadRazorpayScript();
@@ -114,26 +128,17 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
           name: "My Retail Shop",
           description: "Order payment",
           handler: async function (response) {
-            // Verify the payment
             await verifyPaymentHandler(response, savedData);
           },
-          prefill: {
-            name: customerName,
-            contact: mobileNumber,
-          },
-          theme: {
-            color: "#3399cc"
-          },
-          model: {
+          prefill: { name: customerName, contact: mobileNumber },
+          theme: { color: "#3399cc" },
+          modal: {  // ✅ corrected
             ondismiss: async () => {
-              // if user doesn't complete the payment and directly cloe the page
               await deleteOrderOnFailure(savedData.orderId);
-
               toast.error("Payment cancelled!!!");
             }
           }
-
-        }
+        };
 
         const rzp = new window.Razorpay(options);
 
@@ -153,7 +158,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
       console.error(error);
       toast.error("Payment processing failed");
     } finally {
-      setIsProcesing(false)
+      setIsProcessing(false)
     }
 
   }
@@ -246,7 +251,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
               razorpayOrderId: orderDetails.paymentDetails?.razorpayOrderId,
               razorpayPaymentId: orderDetails.paymentDetails?.razorpayPaymentId,
             }}
-            onClose={() => setShowPopup(false)}
+            onClose={handleClosePopup}
             onPrint={handlePrintReceipt}
           />
         )
