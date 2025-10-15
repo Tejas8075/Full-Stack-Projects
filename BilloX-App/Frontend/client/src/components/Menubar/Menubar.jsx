@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { assets } from '../../assets/assets';
-import './Menubar.css'
+import './menubar.css'
 import { useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
 
