@@ -5,7 +5,7 @@ import ReceiptPopup from '../ReceiptPopup/ReceiptPopup';
 import toast from 'react-hot-toast';
 import { createOrder, deleteOrder } from '../../service/OrderService';
 import { createRazorpayOrder, verifyPayment } from '../../service/PaymentService';
-import { AppConstants } from '../../utils/constants';
+import { AppConstants } from '../../utils/constants.js';
 
 const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNumber }) => {
 
