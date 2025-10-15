@@ -59,7 +59,7 @@ const Dashboard = () => {
 
             <div className="stat-content">
               <h3>Today's Orders</h3>
-              <p>₹{data.todayOrderCount.toFixed(2)}</p>
+              <p>{data.todayOrderCount.toFixed(2)}</p>
             </div>
           </div>
         </div>
