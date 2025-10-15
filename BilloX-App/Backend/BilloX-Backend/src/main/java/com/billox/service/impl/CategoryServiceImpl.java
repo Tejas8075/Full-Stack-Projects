@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +33,9 @@ public class CategoryServiceImpl implements CategoryService {
 	private final ItemRepository iRepo;
 
 	private final StaticResourceConfig sRConfig;
+	
+	@Value("${file.upload.url}")
+	private String fileUploadUrl;
 
 	@Override
 	public CategoryResponse add(CategoryRequest request, MultipartFile file) throws IOException {
@@ -48,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 		Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-		String imagUrl = "http://localhost:8080/api/v1.0/uploads/" + fileName;
+		String imagUrl = fileUploadUrl + "/api/v1.0/uploads/" + fileName;
 
 		CategoryEntity newCategory = convertToEntity(request);
 

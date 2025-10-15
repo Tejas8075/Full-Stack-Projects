@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -32,6 +33,9 @@ public class ItemServiceImpl implements ItemService {
 	private final ItemRepository iRepo;
 
 	private final CategoryRepository cRepo;
+	
+	@Value("${file.upload.url}")
+	private String fileUploadUrl;
 
 	@Override
 	public ItemResponse add(ItemRequest request, MultipartFile file) throws IOException {
@@ -48,7 +52,7 @@ public class ItemServiceImpl implements ItemService {
 
 		Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-		String imgUrl = "http://localhost:8080/api/v1.0/uploads/" + fileName;
+		String imgUrl = fileUploadUrl + "/api/v1.0/uploads/" + fileName;
 
 		ItemEntity newItem = convertToEntity(request);
 

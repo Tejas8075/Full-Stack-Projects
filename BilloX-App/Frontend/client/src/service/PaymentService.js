@@ -1,13 +1,13 @@
 import axios from "axios";
 
 export const createRazorpayOrder = async (data) => {
-  return await axios.post(`http://localhost:8080/api/v1.0/payments/create-order`, data, {
+  return await axios.post(`${import.meta.env.VITE_API_URL}/api/v1.0/payments/create-order`, data, {
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
 }
 
 export const verifyPayment = async (paymentData) => {
-  return await axios.post(`http://localhost:8080/api/v1.0/payments/verify`, paymentData, {
+  return await axios.post(`${import.meta.env.VITE_API_URL}/api/v1.0/payments/verify`, paymentData, {
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
   });
 }
