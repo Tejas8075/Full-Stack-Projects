@@ -12,7 +12,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
   const { cartItems, clearCart } = useContext(AppContext);
 
   const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
-  const tax = totalAmount * 0.01;
+  const tax = Math.round(totalAmount * 0.01);
   const grandTotal = totalAmount + tax;
 
   const [isProcessing, setIsProcessing] = useState(false);
